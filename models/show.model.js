@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
+const activePerformance = require('../models/active.performance')
 
 const showSchema = new mongoose.Schema(
   {
-    dateShow: {
-      type: Date
+    performances: {
+      type: []
     },
-    session: {
-      type: number
-    },
-    artistId: String,
-    performanceId: String
+    activePerformance: {
+      type: activePerformance
+    }
   },
   {
     timestamps: true,

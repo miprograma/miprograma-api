@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 
-module.exports.iisAuthenticated = (req, res, next) => {
+module.exports.isAuthenticated = (req, res, next) => {
   if(req.isAuthenticated()){
     next();
   }else{
