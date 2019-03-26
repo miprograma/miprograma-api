@@ -1,7 +1,7 @@
-const createError = require("https-errors");
+const createError = require("http-errors");
 const user = require("../models/user.model");
-const passport = rquire("passport");
-const LocalStrategy = passport("local-passport").Strategy; //<------- ¿por qué en mayúscula LocalStrategy?
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy; //<------- ¿por qué en mayúscula LocalStrategy?
 
 passport.serializeUser((user, next) => {
   next(null, uder.id);
