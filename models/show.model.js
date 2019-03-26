@@ -7,7 +7,7 @@ const showSchema = new mongoose.Schema(
       type: []
     },
     activePerformance: {
-      type: activePerformance
+      type: activePerformance //<---- ¿Esto es así?
     }
   },
   {
