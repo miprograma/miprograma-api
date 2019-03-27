@@ -1,12 +1,15 @@
-// const express = require('express');
-// const router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-// const secure = require('../middlewares/secure.middle');
-// performanceController = require('../controllers/performance.controller');
+const secure = require('../middlewares/secure.middle');
+performancesController = require('../controllers/performances.controller');
 
-// router.get('/', secure.isAuthenticated, performanceController.list);
-// router.post('/', secure.isAuthenticated, performanceController.create);
-// router.put('/:id', secure.isAuthenticated, performanceController.update);
-// router.delete('/:id', secure.isAuthenticated, performanceController.delete);
+router.get('/', performancesController.list);
+router.post('/', performancesController.create);
+router.put('/:id', performancesController.update);
+router.delete('/:id', performancesController.delete);
 
-// module.exports = router;
+module.exports = router;
+
+
+// secure.isAuthenticated,

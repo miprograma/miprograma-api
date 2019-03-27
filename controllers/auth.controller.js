@@ -3,5 +3,10 @@ const createError = require('http-errors');
 const passport = require('passport');
 
 module.exports.isAdmin = (req, res, next) => {
-  res.send('Hola Mundo');
-}
+    User.find()
+      .then(users => res.json(users))
+      .catch(next)
+  }
+
+
+

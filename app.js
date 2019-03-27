@@ -31,8 +31,8 @@ app.use(passport.session());
 
 
 app.use('/', authRoutes);
-// app.use('/artists', artistsRoutes);
-// app.use('/performances', performancesRoutes);
+app.use('/artists', artistsRoutes);
+app.use('/performances', performancesRoutes);
 // app.use('/shows', showsRoutes);
 
 app.use(function (req, res, next) {

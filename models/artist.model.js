@@ -9,9 +9,12 @@ const artistSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      rquired: true
+      required: true
     },
-    imageUrl: String
+    imageUrl: {
+      type: String,
+      default: "https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2015/01/09/14208328301275.jpg"
+    }
   },
   {
     timestamps: true,
@@ -27,4 +30,4 @@ const artistSchema = new mongoose.Schema(
 );
 
 const Artist = mongoose.model("Artist", artistSchema);
-mondule.exports = Artist;
+module.exports = Artist;

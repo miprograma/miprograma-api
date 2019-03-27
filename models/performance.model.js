@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const performanceSchema = new mongoose.Schema = ({
+const performanceSchema = new mongoose.Schema(
+  {
 title: {
   type: String,
   required: true
@@ -23,4 +24,4 @@ description: {
 });
 
 const Performance = mongoose.model('Performance', performanceSchema);
-mondule.exports = Performance;
+module.exports = Performance;
