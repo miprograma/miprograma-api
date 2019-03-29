@@ -11,6 +11,7 @@ const artistsRoutes = require('./routes/artists.routes');
 const performancesRoutes = require('./routes/performances.routes');
 const showsRoutes = require('./routes/shows.routes');
 const authRoutes = require('./routes/auth.routes');
+const activePerformance = require('./routes/nextPerformance.routes');
 
 require('./configs/db.config');
 const session = require('./configs/session.config');
@@ -33,7 +34,9 @@ app.use(passport.session());
 app.use('/', authRoutes);
 app.use('/artists', artistsRoutes);
 app.use('/performances', performancesRoutes);
-// app.use('/shows', showsRoutes);
+app.use('/shows', showsRoutes);
+//app.use('/next-performances', nextPerformance);
+
 
 app.use(function (req, res, next) {
   res.locals.session = req.user;

@@ -1,16 +1,12 @@
 const mongoose = require("mongoose");
-const activePerformance = require('../models/active.performance')
 
-const artistPerformanceSchema = new mongoose.Schema({
-  artist: { type: mongoose.Schema.Types.ObjectId, ref: 'Artist' },
-  performance: { type: mongoose.Schema.Types.ObjectId, ref: 'Performance' }
-});
+
 
 const showSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
-    active: artistPerformanceSchema,
-    order: [artistPerformanceSchema]
+//--> ¿Podría ser que me sobre? --> active: artistPerformanceSchema,
+    order: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ArtistPerformance' }]
   },
   {
     timestamps: true,

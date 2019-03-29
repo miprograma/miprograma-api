@@ -1,37 +1,37 @@
-const Artist = require("../models/artist.model");
+const ActivePerformance = require("../models/nextPerformance.model");
 const createError = require("http-errors");
 const passport = require("passport");
 
 module.exports.list = (req, res, next) => {
-  Artist.find()
+  ActivePerformance.find()
     .then(cards => res.json(cards))
     .catch(next);
 };
 
 module.exports.create = (req, res, next) => {
-  const artist = new Artist(req.body);
+  const activePerformance = new ActivePerformance(req.body);
   artist
     .save()
-    .then(artist => res.json(artist))
+    .then(activePerformance => res.json(activePerformance))
     .catch(next);
 };
 
 module.exports.update = (req, res, next) => {
-  Artist.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then(artist => {
-      if (!artist) {
+  ActivePerformance.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(activePerformance => {
+      if (!activePerformance) {
         throw createError(404, "Artist not found");
       } else {
-        res.json(artist);
+        res.json(activePerformance);
       }
     })
     .catch(next);
 };
 
 module.exports.delete = (req, res, next) => {
-  Artist.findByIdAndDelete(req.params.id)
-    .then(artist => {
-      if (!artist) {
+  ActivePerformance.findByIdAndDelete(req.params.id)
+    .then(activePerformance => {
+      if (!activePerformance) {
         throw createError(404, "Artist not found");
       } else {
         res.status(204).json();
