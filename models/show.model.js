@@ -1,19 +1,35 @@
 const mongoose = require("mongoose");
 
 const showSchema = new mongoose.Schema(
-  { title: String,
-    date:{ type: Date,
-           required: true
-  },
-    session: { type: Number,
-              max: 5,
-              required: true
+  {
+    title: String,
+    date: { type: Date, required: true },
+    current: {
+      artist: { type: mongoose.Schema.Types.ObjectId, ref: "Artist" },
+      performance: { type: mongoose.Schema.Types.ObjectId, ref: "Performance" }
     },
-    show:[{
-    artist: { type: mongoose.Schema.Types.ObjectId, ref: 'Artist' },//<--¿Se referencia en mayúscula?
-    performance: { type: mongoose.Schema.Types.ObjectId, ref: 'Performance' },
-    active: false
-    }]
+    sessions: {
+      type: [{
+        _id: {
+          type: Number,
+          min: 1,
+          max: 5
+        },
+        show: {
+          type: [
+            {
+              artist: { type: mongoose.Schema.Types.ObjectId, ref: "Artist" },
+              performance: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Performance"
+              }
+            }
+          ],
+          default: []
+        }
+      }],
+      default: []
+    }
   },
   {
     timestamps: true,
@@ -22,18 +38,25 @@ const showSchema = new mongoose.Schema(
         ret.id = doc._id;
         delete ret._id;
         delete ret.__v;
+        ret.sessions = ret.sessions.map(session => {
+          const id = session._id;
+          delete session._id;
+          session.id = id;
+          return session
+        })
         return ret;
       }
     }
   }
 );
 
-const Show = mongoose.model('Show', showSchema);
+showSchema.post('save', function(doc, next) {
+  doc.populate('sessions.show.artist')
+    .populate('sessions.show.performance')
+    .execPopulate()
+    .then(() => next());
+});
+
+const Show = mongoose.model("Show", showSchema);
 module.exports = Show;
 
-
-//   {
-//     title: { type: String, required: true },
-// //--> ¿Podría ser que me sobre? --> active: artistPerformanceSchema,
-//     order: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ArtistPerformance' }]
-//   },
