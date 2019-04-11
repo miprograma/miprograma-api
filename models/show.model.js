@@ -9,25 +9,10 @@ const showSchema = new mongoose.Schema(
       performance: { type: mongoose.Schema.Types.ObjectId, ref: "Performance" }
     },
     sessions: {
-      type: [{
-        _id: {
-          type: Number,
-          min: 1,
-          max: 5
-        },
-        show: {
-          type: [
-            {
+      type: [ {
               artist: { type: mongoose.Schema.Types.ObjectId, ref: "Artist" },
-              performance: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Performance"
-              }
-            }
-          ],
-          default: []
-        }
-      }],
+              performance: { type: mongoose.Schema.Types.ObjectId, ref: "Performance" }
+            } ],
       default: []
     }
   },
@@ -51,8 +36,8 @@ const showSchema = new mongoose.Schema(
 );
 
 showSchema.post('save', function(doc, next) {
-  doc.populate('sessions.show.artist')
-    .populate('sessions.show.performance')
+  doc.populate('sessions.artist')
+    .populate('sessions.performance')
     .execPopulate()
     .then(() => next());
 });

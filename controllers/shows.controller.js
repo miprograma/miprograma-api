@@ -8,8 +8,8 @@ module.exports.getByDate = (req, res, next) => {
     next(createError(400, 'Date query parameter is requiered'))
   } else {
     Show.findOne({ date: date })
-      .populate('sessions.show.artist')
-      .populate('sessions.show.performance')
+      .populate('sessions.artist')
+      .populate('sessions.performance')
       .populate('current.artist')
       .populate('current.performance')
       .then(show => {
@@ -41,23 +41,49 @@ module.exports.create = (req, res, next) => {
 
 
 module.exports.updateSession = (req, res, next) => {
+  let sessions = [];
+  for (i in req.body.showBlockList){
+    const { artist, performance } = req.body.showBlockList[i];
+    if ((artist != "") && (performance != "")){
+      sessions.push({
+        artist,
+        performance
+      });
+    }
+  }
+  Show.findByIdAndUpdate(req.params.id, { $set: { sessions: sessions } }, { new: true })
+    .then(show => {
+      if (!show) {
+        throw createError(404, "Show not found");
+      } else {
+        res.status(200).json(show);
+      }
+    })
+    .catch(next);
+
+/*
+
   Show.findById(req.params.id)
     .then(show => {
       if (!show) {
         throw createError(404, "Show not found");
       } else {
-        const sessionId = req.params.sessionId;
-        const session = show.sessions.find(session => session.id === sessionId);
-        if (session) {
-          session.show = req.body.show;
-        } else {
-          show.sessions.push({_id: sessionId, show: req.body.show})
-        }
+        const sessions = show.sessions;
+        const sessionIndex = parseInt(req.params.sessionIndex,10);
+        sessions[sessionIndex] = req.body.showBlockList;
+        console.log(sessions);
+        show.sessions = sessions;
+        console.log(show.sessions);
         return show.save()
-          .then(show => res.json(show))
+          .then(show => {
+          res.json(show);
+          
+          console.log(show);
+        });
       }
     })
     .catch(next);
+    */
 };
 
 module.exports.update = (req, res, next) => {
