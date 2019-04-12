@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cors = require('cors');
 
 const artistsRoutes = require('./routes/artists.routes');
 const performancesRoutes = require('./routes/performances.routes');
@@ -15,7 +16,7 @@ const nextPerformancesRoutes = require('./routes/nextPerformance.routes');
 
 require('./configs/db.config');
 const session = require('./configs/session.config');
-const cors = require('./configs/cors.config');
+const corsOptions = require('./configs/cors.config');
 require('./configs/passport.config');
 
 const app = express();
@@ -24,7 +25,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors);
+app.use(cors(corsOptions));
 
 app.use(session);
 app.use(passport.initialize());
