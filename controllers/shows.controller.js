@@ -3,11 +3,17 @@ const createError = require("http-errors");
 const passport = require("passport");
 
 module.exports.getByDate = (req, res, next) => {
+  console.log('entra aqui')
   const { date } = req.query
+  const today = new Date(date);
+  const tomorrow = new Date(date);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  console.log(tomorrow);
   if (!date) {
     next(createError(400, 'Date query parameter is requiered'))
   } else {
-    Show.findOne({ date: date })
+    // Show.findOne({ date: new Date(date) })
+    Show.find({ date: { $gte: today, $lt: tomorrow} })
       .populate('sessions.artist')
       .populate('sessions.performance')
       .populate('current.artist')
@@ -26,7 +32,17 @@ module.exports.getByDate = (req, res, next) => {
 };
 
 module.exports.list = (req, res, next) => {
-  Show.find()
+  Show.find(req.query)
+    .populate('sessions.artist')
+    .populate('sessions.performance')
+    .then(shows => res.json(shows))
+    .catch(next)
+}
+
+module.exports.detail = (req, res, next) => {
+  Show.findById(req.params.id)
+    .populate('sessions.artist')
+    .populate('sessions.performance')
     .then(shows => res.json(shows))
     .catch(next)
 }
@@ -37,6 +53,21 @@ module.exports.create = (req, res, next) => {
     .save()
     .then(show => res.json(show))
     .catch(next);
+};
+
+module.exports.setActive = (req, res, next) => {
+  Show.updateMany({}, { active: false })
+    .then(() => Show.findByIdAndUpdate(req.params.id, { active: true }))
+    .then(() => res.json({}))
+    .catch(next)
+};
+
+module.exports.getActive = (req, res, next) => {
+  Show.findOne({ active: true })
+    .populate('sessions.artist')
+    .populate('sessions.performance')
+    .then((show) => res.json(show))
+    .catch(next)
 };
 
 

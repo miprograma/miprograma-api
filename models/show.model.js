@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const showSchema = new mongoose.Schema(
   {
     title: String,
+    active: { type: Boolean, default: false },
     date: { type: Date, required: true },
+    order: { type: Number, required: true },
     current: {
       artist: { type: mongoose.Schema.Types.ObjectId, ref: "Artist" },
       performance: { type: mongoose.Schema.Types.ObjectId, ref: "Performance" }
